@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para mi negrita hermosa</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #e6ccff, #d9b3ff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      color: #8e44ad;
+      font-size: clamp(28px, 5vw, 40px);
+      animation: latido 2s infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes latido {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .intro {
+      color: #4a235a;
+      font-size: clamp(16px, 3vw, 20px);
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+
+    .botones-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+
+    .boton {
+      background-color: #a64ca6;
+      border: none;
+      color: white;
+      padding: 15px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .boton:hover {
+      background-color: #8e44ad;
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .mensaje-container {
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .mensaje {
+      font-size: clamp(18px, 4vw, 24px);
+      color: #4a235a;
+      font-weight: bold;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      animation: aparecer 0.6s ease-out;
+      max-width: 80%;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .control-musica {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .control-musica i {
+      font-size: 24px;
+      color: #8e44ad;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <h1>Para mi Negrita hermosa ♥️</h1>
+  <p class="intro">Presiona los botoncitos y siente mi amor en cada uno:</p>
+
+  <div class="botones-container">
+    <button class="boton" onclick="mostrarMensaje(1)">TE</button>
+    <button class="boton" onclick="mostrarMensaje(2)">AMO</button>
+    <button class="boton" onclick="mostrarMensaje(3)">MI</button>
+    <button class="boton" onclick="mostrarMensaje(4)">NEGRITA</button>
+    <button class="boton" onclick="mostrarMensaje(5)">HERMOSA</button>
+    <button class="boton" onclick="mostrarMensaje(6)">♥️</button>
+  </div>
+
+  <div class="mensaje-container">
+    <div class="mensaje" id="mensaje"></div>
+  </div>
+
+  <div class="control-musica" onclick="controlarMusica()">
+    <i id="icono-musica" class="fas fa-music"></i>
+  </div>
+
+  <audio id="musica" loop>
+    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-sugar-1250.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <script>
+    // Mensajes personalizados
+    const mensajes = [
+      "Mi negrita, tú eres mi sol en los días nublados",
+      "Tu sonrisa me da vida cada mañana",
+      "Gracias por tu amor, tu ternura y tu alma bella",
+      "Eres mi hogar, mi paz, mi todo",
+      "Te amo con locura, Negrita de mi vida",
+      "Prometo amarte todos los días de mi vida"
+    ];
+
+    const emojis = "♥️💋🥰😍😘💋♥️";
+    const musica = document.getElementById('musica');
+    let musicaReproduciendo = false;
+
+    // Mostrar mensaje al hacer clic
+    function mostrarMensaje(numero) {
+      const mensajeElemento = document.getElementById('mensaje');
+      mensajeElemento.textContent = `${mensajes[numero - 1]} ${emojis}`;
+      
+      // Reiniciar animación
+      mensajeElemento.style.animation = 'none';
+      mensajeElemento.offsetHeight; // Trigger reflow
+      mensajeElemento.style.animation = 'aparecer 0.6s ease-out';
+      
+      // Reproducir música si no está sonando
+      if (!musicaReproduciendo) {
+        reproducirMusica();
+      }
+    }
+
+    // Control de música
+    function reproducirMusica() {
+      musica.play()
+        .then(() => {
+          musicaReproduciendo = true;
+          document.getElementById('icono-musica').classList.add('fa-volume-up');
+          document.getElementById('icono-musica').classList.remove('fa-music');
+        })
+        .catch(error => {
+          console.log("Autoplay bloqueado:", error);
+        });
+    }
+
+    function controlarMusica() {
+      if (musicaReproduciendo) {
+        musica.pause();
+        document.getElementById('icono-musica').classList.remove('fa-volume-up');
+        document.getElementById('icono-musica').classList.add('fa-music');
+      } else {
+        musica.play();
+        document.getElementById('icono-musica').classList.add('fa-volume-up');
+        document.getElementById('icono-musica').classList.remove('fa-music');
+      }
+      musicaReproduciendo = !musicaReproduciendo;
+    }
+
+    // Permitir reproducción al hacer clic en cualquier parte
+    document.body.addEventListener('click', function() {
+      if (!musicaReproduciendo) {
+        reproducirMusica();
+      }
+    }, { once: true });
+  </script>
+</body>
+</html>
